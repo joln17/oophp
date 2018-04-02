@@ -11,4 +11,4 @@ namespace Anax\View;
 
 ?>
 
-<div class="footer-text">&copy; Johnny Lindgren 2018</div>
+<img class="flash" src="<?= asset("img/flash-680.jpg") ?>" alt="Flash">

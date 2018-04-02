@@ -53,6 +53,19 @@ namespace Anax\View;
 </div>
 <?php endif; ?>
 
+<!-- flash -->
+<?php if ($this->regionHasContent("flash")) : ?>
+<div class="outer-wrap outer-wrap-flash">
+    <div class="inner-wrap inner-wrap-flash">
+        <div class="row">
+            <div class="flash-wrap">
+                <?php $this->renderRegion("flash")?>
+            </div>
+        </div>
+    </div>
+</div>
+<?php endif; ?>
+
 <!-- main -->
 <?php if (regionHasContent("main")) : ?>
 <div class="outer-wrap outer-wrap-main">

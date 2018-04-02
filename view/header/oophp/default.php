@@ -11,6 +11,6 @@ namespace Anax\View;
 
 ?>
 
-<img class="header-logo" src="<?= asset("img/blad.jpg") ?>" alt="Logo">
+<img class="header-logo" src="<?= asset("img/elephant_small.png") ?>" alt="Logo">
 
-HEADER <?= __FILE__ ?>
+<div class="site-title">Me-sida i kursen oophp</div>

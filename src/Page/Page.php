@@ -37,6 +37,7 @@ class Page implements /* PageRenderInterface, */ InjectionAwareInterface
         // Add views for common header, navbar and footer
         $view->add("header/oophp/default", $data, "header");
         $view->add("navbar/oophp/default", $data, "navbar");
+        $view->add("flash/oophp/default", $data, "flash");
         $view->add("footer/oophp/default", $data, "footer");
 
         // Add view for the overall layout, use region "layout"

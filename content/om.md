@@ -2,15 +2,20 @@
 ...
 Om
 =========================
+[FIGURE src=image/elephant.png class="image-float-right"]
+Denna webbplatsen är en del av kursen [Objektorienterade webbteknologier](https://dbwebb.se/kurser/oophp-v4/) vid [BTH](https://www.bth.se/). 
+I kursen ingår följande kursmoment:
 
-Denna webbplatsen är en del av kursen [XXX](https://dbwebb.se/kurser/XXX). Uppdatera så att länken går till kursens hemsida på dwebb.se.
 
-Några egna kloka ord om kursen?
+* [01: Objektorientering i PHP](https://dbwebb.se/kurser/oophp-v4/kmom01)
+* [02: OO-programmering i PHP](https://dbwebb.se/kurser/oophp-v4/kmom02)
+* [03: PHP PDO och MySQL](https://dbwebb.se/kurser/oophp-v4/kmom03)
+* [04: Lagra innehåll i databasen](https://dbwebb.se/kurser/oophp-v4/kmom04)
+* [05: Programmera i databasen](https://dbwebb.se/kurser/oophp-v4/kmom05)
+* [06: Enhetstestning](https://dbwebb.se/kurser/oophp-v4/kmom06)
+* [07/10: Projekt och examination](https://dbwebb.se/kurser/oophp-v4/kmom10)
 
-En fin och representativ bild för kursen, enligt ditt egna val.
 
-[FIGURE src=image/car.png?w=300 caption="En fin bil som demobild."]
+[Länk till GitHub](https://github.com/dbwebb-se/oophp) för dbwebbs kursrepo.
 
-Länka till [dbwebb kursrepot på GitHub](https://github.com/dbwebbse/XXX).
-
-Länka till [ditt eget repo för me/redovisa på GitHub](https://github.com/XXX/XXX).
+[Länk till GitHub](https://github.com/joln17/oophp) för sidans repo.
