@@ -1,0 +1,107 @@
+<?php
+namespace Joln\Guess;
+
+/**
+ * Guess my number, a class supporting the game through GET, POST and SESSION.
+ */
+class Guess
+{
+    /** @var int $number   The current secret number. */
+    private $number;
+
+    /** @var int $tries    Number of tries a guess has been made. */
+    private $tries;
+
+    /** @var int $minNumber    Lowest valid number to guess on. */
+    private $minNumber = 1;
+
+    /** @var int $maxNumber    Highest valid number to guess on. */
+    private $maxNumber = 100;
+
+    /**
+     * Constructor to initiate the object with current game settings,
+     * if available. Randomize the number if null is sent in.
+     *
+     * @param int $number The current secret number, default -1 to initiate
+     *                    the number from start.
+     * @param int $tries  Number of tries a guess has been made,
+     *                    default 6.
+     */
+    public function __construct(int $number = -1, int $tries = 6)
+    {
+        if ($number == -1) {
+            $this->random();
+        } else {
+            $this->number = $number;
+        }
+        $this->tries = $tries;
+    }
+
+
+    /**
+     * Randomize the secret number between 1 and 100 to initiate a new game.
+     *
+     * @return void
+     */
+    public function random()
+    {
+        $this->number = rand($this->minNumber, $this->maxNumber);
+    }
+
+    /**
+     * Get number of tries left.
+     *
+     * @return int as number of tries made.
+     */
+    public function tries()
+    {
+        return $this->tries;
+    }
+
+    /**
+     * Get the secret number.
+     *
+     * @return int as the secret number.
+     */
+    public function number()
+    {
+        return $this->number;
+    }
+
+    /**
+     * Make a guess, decrease remaining guesses and return a string stating
+     * if the guess was correct, too low or to high or if no guesses remains.
+     *
+     * @throws GuessException when guessed number is out of bounds.
+     *
+     * @param int $number    The guessed number.
+     *
+     * @return string to show the status of the guess made.
+     */
+    public function makeGuess($number)
+    {
+        if (!preg_match('/^-?\d+$/', $number)) {
+            throw new GuessException("{$number} is not an integer.");
+        }
+        if ($number > $this->maxNumber || $number < $this->minNumber) {
+            throw new GuessException("{$number} is out of bounds.");
+        }
+        if ($this->tries > 0) {
+            switch ($this->number <=> $number) {
+                case -1:
+                    $status = "{$number} is too high.";
+                    break;
+                case 1:
+                    $status = "{$number} is too low.";
+                    break;
+                case 0:
+                    $status = "{$number} is correct!";
+                    break;
+            }
+            $this->tries--;
+        } else {
+            $status = "You have no guesses left.";
+        }
+        return $status;
+    }
+}

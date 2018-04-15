@@ -1,0 +1,133 @@
+<?php
+/**
+ * Guess game specific routes.
+ */
+//var_dump(array_keys(get_defined_vars()));
+
+
+
+/**
+ * Guess my number with GET
+ */
+$app->router->get('gissa/get', function () use ($app) {
+    $data = [
+        'title' => "Gissa mitt nummer (GET)",
+        'method' => 'get',
+        'session' => false
+    ];
+    $number = $_GET['number'] ?? -1;
+    $tries = $_GET['tries'] ?? 6;
+    $guess = $_GET['guess'] ?? null;
+
+    if (isset($_GET['doReset'])) {
+        $number = -1;
+        $tries = 6;
+    }
+
+    $game = new \Joln\Guess\Guess($number, $tries);
+    $res = null;
+    if (isset($_GET['doGuess'])) {
+        try {
+            $res = $game->makeGuess($guess);
+        } catch (GuessException $e) {
+            echo "Got exception: " . get_class($e) . "." . $e->getMessage() . "<hr>";
+        }
+    }
+    if (isset($_GET['doCheat'])) {
+        $res = "The secret number is {$game->number()}.";
+    }
+
+    $data['game'] = $game;
+    $data['res'] = $res;
+    $data['guess'] = $guess;
+
+    $app->view->add('guess/game', $data);
+    $app->page->render($data);
+});
+
+
+
+/**
+ * Guess my number with POST
+ */
+$app->router->any(['GET', 'POST'], 'gissa/post', function () use ($app) {
+    $data = [
+        'title' => "Gissa mitt nummer (POST)",
+        'method' => 'post',
+        'session' => false
+    ];
+    $number = $_POST['number'] ?? -1;
+    $tries = $_POST['tries'] ?? 6;
+    $guess = $_POST['guess'] ?? null;
+
+    if (isset($_POST['doReset'])) {
+        $number = -1;
+        $tries = 6;
+    }
+
+    $game = new \Joln\Guess\Guess($number, $tries);
+    $res = null;
+    if (isset($_POST['doGuess'])) {
+        try {
+            $res = $game->makeGuess($guess);
+        } catch (GuessException $e) {
+            echo "Got exception: " . get_class($e) . "." . $e->getMessage() . "<hr>";
+        }
+    }
+    if (isset($_POST['doCheat'])) {
+        $res = "The secret number is {$game->number()}.";
+    }
+
+    $data['game'] = $game;
+    $data['res'] = $res;
+    $data['guess'] = $guess;
+
+    $app->view->add('guess/game', $data);
+    $app->page->render($data);
+});
+
+
+
+/**
+ * Guess my number with SESSION
+ */
+$app->router->any(['GET', 'POST'], 'gissa/session', function () use ($app) {
+    $data = [
+        'title' => "Gissa mitt nummer (SESSION)",
+        'method' => 'post',
+        'session' => true
+    ];
+
+    if (isset($_POST['doReset'])) {
+        unset($_SESSION['number']);
+        unset($_SESSION['tries']);
+    }
+
+    $number = $_SESSION['number'] ?? -1;
+    $tries = $_SESSION['tries'] ?? 6;
+    $guess = $_POST['guess'] ?? null;
+
+    $game = new \Joln\Guess\Guess($number, $tries);
+    $res = null;
+    if (isset($_POST['doGuess'])) {
+        try {
+            $res = $game->makeGuess($guess);
+        } catch (GuessException $e) {
+            echo "Got exception: " . get_class($e) . "." . $e->getMessage() . "<hr>";
+        }
+    }
+    if (isset($_POST['doCheat'])) {
+        $res = "The secret number is {$game->number()}.";
+    }
+
+    $_SESSION['number'] = $game->number();
+    $_SESSION['tries'] = $game->tries();
+
+    $data['game'] = $game;
+    $data['res'] = $res;
+    $data['guess'] = $guess;
+
+    $app->view->add('guess/game', $data);
+    $app->page->render($data);
+});
+

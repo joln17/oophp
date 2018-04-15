@@ -1,0 +1,85 @@
+<?php
+namespace Joln\Dice100;
+
+/**
+ * Class for DiceHand consisting of dices
+ */
+class DiceHand
+{
+    /** @var int $numberOfDices    Number of dices in the hand */
+    private $numberOfDices;
+
+    /** @var array $dices    Array with dices */
+    private $dices = [];
+
+    /** @var array $faceValues    Face values from the dice hand */
+    private $faceValues = [];
+
+
+
+    /**
+     * Constructor to create a DiceHand
+     *
+     * @param int $numberOfDices    Number of dices, default 5.
+     */
+    public function __construct(int $numberOfDices = 5)
+    {
+        $this->numberOfDices = $numberOfDices;
+        for ($i = 1; $i <= $numberOfDices; $i++) {
+            $this->dices[] = new Dice();
+        }
+    }
+
+
+
+    /**
+     * Roll the dice hand and generate face values
+     *
+     * @return void
+     */
+    public function rollDiceHand()
+    {
+        $this->faceValues = [];
+        foreach ($this->dices as $dice) {
+            $dice->roll();
+            $this->faceValues[] = $dice->getLastFaceValue();
+        }
+    }
+
+
+
+    /**
+     * Get face values of the dice hand
+     *
+     * @return array    Array with the face values
+     */
+    public function getFaceValues()
+    {
+        return $this->faceValues;
+    }
+
+
+
+    /**
+     * Get the sum of the face values
+     *
+     * @return int    Sum of the face values
+     */
+    public function sum()
+    {
+        return array_sum($this->faceValues);
+    }
+
+
+
+    /**
+     * Get the average of the face values
+     *
+     * @return float    Average of the face values
+     */
+    public function average()
+    {
+        return array_sum($this->faceValues) / $this->numberOfDices;
+    }
+}
+

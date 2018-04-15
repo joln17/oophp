@@ -19,6 +19,9 @@ $app = new \Anax\App\AppDIMagic();
 $di->setShared("app", $app);
 $app->setDI($di);
 
+session_name('joln17');
+session_start();
+
 // Include user defined routes using $app-style.
 foreach (glob(__DIR__ . "/../src/route/*.php") as $filename) {
     require $filename;
