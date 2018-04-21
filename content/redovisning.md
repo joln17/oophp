@@ -44,10 +44,28 @@ namespace i PHP och hur det används. Samt hur man kan generera dokumentation me
 Jag lade in även GET och POST-varianterna för gissa tal-spelet samt gjorde det möjligt att spela tärningsspel 100 även med fler än en tärning.
 
 
+
 Kmom03
 -------------------------
 
-Här är redovisningstexten
+### Har du tidigare erfarenheter av att skriva kod som testar annan kod?
+Nej jag har ingen tidigare erfarenhet erfarenhet av att skriva enhetstester eller annan kod för testning så det var intressant att bekanta sig lite med detta första gången.
+
+### Hur ser du på begreppen enhetstestning och att skriva testbar kod?
+Det kräver ju att man hela utvecklingsprocessen tänker på att koden man skriver ska bli testbar så det blir ju ytterligare en dimension att ta hänsyn till. Vilket för en nybörjarprogrammerare kan kännas lite jobbigt eftersom det brukar vara tillräckligt mycket att tänka på ändå. Den stora fördelen med enhetstestning ser jag framförallt om man senare behöver skriva om delar av koden. Då ger enhetstestning möjlighet att se att ingen annan del i koden gick sönder.
+
+### Förklara kort begreppen white/grey/black box testing samt positiva och negativa tester, med dina egna ord. 
+White box testing: Testningen sker på källkodsnivå och man har också full insyn i källkoden och har möjlighet att testa varje enskild del av koden.
+Black box testing: Här har man inte ha tillgång tillgång till källkoden och det är inte väsentligt hur koden är skriven utan det man vill testa är funktionaliteten. 
+Grey box testing: Kan ses som kombination av de två föregående begreppen. Vid grey box testing har man viss kunskap om den bakomliggande koden t.ex. tillgång till dokumentation och kännedom om vilka algoritmer som används. 
+Positiva tester: Tester utformade för att verifiera att programmet fungerar som det är tänkt. T.ex. givet en specifik (korrekt) indata ska programmet ge förväntad utdata.
+Negativa tester: Tester uformade för att generera fel i programmet. T.ex. om ålder efterfrågas i ett formulär kan ett test vara att skriva in bokstäver istället för siffror.
+
+### Hur gick det att genomföra uppgifterna med enhetstester, använde du egna klasser som bas för din testning?
+Det gick bra. Jag använde min egna Guess-klass som förvisso var snarlik exempel-klassen. Dice-klasserna tror jag hade behövt skriva om delar av för att lyckas testa fullt ut vilket jag avstod.
+
+### Vilken är din TIL för detta kmom? 
+Jag har fått en första inblick i vad enhetstestning är, ett begrepp som jag hört tidigare men aldrig greppat vad det rent konkret innebär.
 
 
 
