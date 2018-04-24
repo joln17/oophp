@@ -1,0 +1,39 @@
+<?php
+namespace Joln\Dice100;
+
+/**
+ * A dice hand which has the ability to present data to be used for creating
+ * a histogram.
+ */
+class DiceHandHistogram extends DiceHand implements HistogramInterface
+{
+    use HistogramTrait;
+
+
+
+    /**
+     * Get max value for the histogram.
+     *
+     * @return int with the max value.
+     */
+    public function getHistogramMax()
+    {
+        return 6;
+    }
+
+
+
+    /**
+     * Roll the dice, remember its value in the serie
+     *
+     * @return void
+     */
+    public function rollDiceHand()
+    {
+        parent::rollDiceHand();
+        $faceValues = $this->getFaceValues();
+        foreach ($faceValues as $value) {
+            $this->serie[] = $value;
+        }
+    }
+}

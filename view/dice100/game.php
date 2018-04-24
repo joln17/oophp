@@ -37,8 +37,10 @@ Datorns poäng totalt: <?= $score['computer'] ?></p>
 
 </form>
 
-<p>Poäng i spelomgång: <?= $points ?> </p>
-
+<p>Poäng i spelomgång: <?= $points ?></p>
+<h4>Histogram</h4>
+<pre><?= $histogram->getAsText() ?></pre>
+<h4>Kastresultat</h4>
 <ol>
 <?php foreach ($game->getFaceValues() as $valueArr) : ?>
     <li>
