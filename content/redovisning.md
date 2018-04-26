@@ -76,7 +76,24 @@ Jag har fått en första inblick i vad enhetstestning är, ett begrepp som jag h
 Kmom04
 -------------------------
 
-Här är redovisningstexten
+### Vilka är dina tankar och funderingar kring trait och interface? 
+Interface syfte och användning känns ganska klar för mig. Trait har jag däremot fortfarande en del frågetecken kring t.ex. gällande i vilka situationer det är ”rätt” lösning. Det uppges som en ersättning till avsaknaden av multipelt arv men multipelt arv brukar väl å andra sidan sällan vara ”rätt” lösning i OOP ens i de språken som stödjer det? Andra beskrivningar jag hittar av trait är att det bara ska ses som en ”compiler-assisted copy-and-paste” och min uppfattning av trait är att det nog känns som en mer passande beskrivning.
+
+### Hur gick det att skapa intelligensen och taktiken till tärningsspelet, hur gjorde du? 
+Först hade jag en idé om att använda en exakt optimal spelstrategi genom beräkna sannolikheterna för vinna om man fortsätter kasta respektive stannar givet hur många poäng datorn har totalt, hur många poäng spelaren har totalt och hur många poäng datorn har hittills i spelomgången. Det visade sig dock bli ett komplext problem som det skrivits [mindre avhandlingar om](http://cs.gettysburg.edu/~tneller/papers/pig.zip) så det kändes lite för ambitiöst att försöka lösa och programmera det. Istället nöjde jag mig med en lösning som approximerar optimal spelstrategi med ett antal parametrar enligt följande:
+
+Låt _i_ vara datorns totala poäng, _j_ vara spelarens totala poäng samt _k_ antalet poäng datorn uppnått i den nuvarande omgången. Låt då datorn fortsätta kasta om antingen _i_ >= 100 - _e_ eller _j_ >= 100 - _e_. Annars låt datorn fortsätta kasta om _k_ < _c_ + (_j_ - _i_) / _d_. Där parametrarna _c_, _d_, _e_ sätts till 21, 8 resp. 29. Källa: [”Practical Play of the Dice Game Pig”](http://cs.gettysburg.edu/~tneller/papers/umap10.pdf).
+
+Det kommer innebära att datorn fortsätter kasta för att försöka uppnå 100 poäng i nuvarande omgång om någon av spelarna har 71 poäng eller mer. Hur aggressivt datorn spelar kommer annars vara beroende av hur många poäng före eller efter den ligger motståndaren.
+
+### Några reflektioner från att integrera hårdare in i ramverkets klasser och struktur? 
+Fördelarna som nämns i uppgiften antar jag överväger nackdelarna. Men en uppenbar nackdel är ju annars om man en dag vill bryta ut koden (spelet i det här fallet) och använda det på någon annan sida utanför ramverket då man måste skriva om stora delar av koden. 
+
+### Berätta hur väl du lyckades med make test inuti ramverket och hur väl du lyckades att testa din kod med enhetstester och vilken kodtäckning du fick. 
+Jag stötte på lite problem med felmeddelanden för .js-filerna i build-mappen så jag exkluderade den mappen. I övrigt stötte jag inte på några problem med make test. Några rader och metoder fick jag hoppa över att enhetstesta men jag nådde ändå en kodtäckning på 90+% sett till rader och metoder.
+
+### Vilken är din TIL för detta kmom?
+Även om jag som sagt fortfarande har vissa frågetecken kring användandet av trait så får jag ändå säga att trait och interface och exempel på hur de kan användas är veckans TIL för mig.
 
 
 
