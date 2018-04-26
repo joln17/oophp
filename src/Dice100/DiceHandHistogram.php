@@ -32,8 +32,6 @@ class DiceHandHistogram extends DiceHand implements HistogramInterface
     {
         parent::rollDiceHand();
         $faceValues = $this->getFaceValues();
-        foreach ($faceValues as $value) {
-            $this->serie[] = $value;
-        }
+        $this->serie = array_merge($this->serie, $faceValues);
     }
 }

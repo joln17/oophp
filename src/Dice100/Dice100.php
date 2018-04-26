@@ -98,9 +98,7 @@ class Dice100
         $optimalPoints = 21 + round(($this->score['player'] - $this->score['computer']) / 8);
         do {
             $points = $this->play();
-        } while (
-            $points != 0 &&
-            $this->score['computer'] + $points < self::GAME_SCORE &&
+        } while ($points != 0 && $this->score['computer'] + $points < self::GAME_SCORE &&
             ($this->score['player'] >= 71 || $this->score['computer'] >= 71 || $points < $optimalPoints)
         );
         $this->score['computer'] += $points;

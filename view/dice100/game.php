@@ -12,10 +12,12 @@ namespace Anax\View;
 ?>
 
 <h1><?= $title ?></h1>
-
+<h4>Histogram</h4>
+<pre><?= $histogram->getAsText() ?></pre>
+<hr>
 <p>Dina poäng totalt: <?= $score['player'] ?> <br>
 Datorns poäng totalt: <?= $score['computer'] ?></p>
-
+<hr>
 <p><?= $message ?></p>
 
 <form method="post">
@@ -38,8 +40,6 @@ Datorns poäng totalt: <?= $score['computer'] ?></p>
 </form>
 
 <p>Poäng i spelomgång: <?= $points ?></p>
-<h4>Histogram</h4>
-<pre><?= $histogram->getAsText() ?></pre>
 <h4>Kastresultat</h4>
 <ol>
 <?php foreach ($game->getFaceValues() as $valueArr) : ?>

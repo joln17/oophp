@@ -10,6 +10,7 @@
         Custom rule set for oophp course.
     </description>
 
+    <exclude-pattern>build/</exclude-pattern>
     <exclude-pattern>doc/</exclude-pattern>
     <exclude-pattern>htdocs/</exclude-pattern>
     <exclude-pattern>view/</exclude-pattern>

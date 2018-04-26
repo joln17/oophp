@@ -4,6 +4,7 @@
 
     <file>.</file>
 
+    <exclude-pattern>build/</exclude-pattern>
     <exclude-pattern>doc/</exclude-pattern>
     <exclude-pattern>htdocs/</exclude-pattern>
     <exclude-pattern>view/</exclude-pattern>
