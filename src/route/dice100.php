@@ -14,15 +14,13 @@ $app->router->any(['GET', 'POST'], 'tarning100/game', function () use ($app) {
         'title' => "Tärningsspel 100"
     ];
 
-    $session = new \Anax\Session\Session();
-    $request = new \Anax\Request\Request();
-    $game = $session->get('game');
-    $post = $request->getPost();
+    $game = $app->session->get('game');
+    $post = $app->request->getPost();
 
     if (!isset($game) || isset($post['reset']) || empty($post)) {
-        $dices = $request->getGet('dices') ?? 1;
+        $dices = $app->request->getGet('dices') ?? 1;
         $game = new \Joln\Dice100\Dice100($dices);
-        $session->set('game', $game);
+        $app->session->set('game', $game);
     }
 
     $points = $game->getPoints();
