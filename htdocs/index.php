@@ -20,9 +20,7 @@ $di->setShared("app", $app);
 $app->setDI($di);
 
 // Start session
-$session = new \Anax\Session\Session();
-$session->name('joln17');
-$session->start();
+$app->session();
 
 // Include user defined routes using $app-style.
 foreach (glob(__DIR__ . "/../src/route/*.php") as $filename) {
