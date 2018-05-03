@@ -21,6 +21,7 @@
         "psr-4": {
             "Anax\\": "src/",
             "Joln\\": "src/"
-        }
+        },
+        "files": ["src/function.php"]
     }
 }

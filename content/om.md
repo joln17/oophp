@@ -8,11 +8,11 @@ I kursen ingår följande kursmoment:
 
 
 * [01: Objektorientering i PHP](https://dbwebb.se/kurser/oophp-v4/kmom01)
-* [02: OO-programmering i PHP](https://dbwebb.se/kurser/oophp-v4/kmom02)
-* [03: PHP PDO och MySQL](https://dbwebb.se/kurser/oophp-v4/kmom03)
-* [04: Lagra innehåll i databasen](https://dbwebb.se/kurser/oophp-v4/kmom04)
-* [05: Programmera i databasen](https://dbwebb.se/kurser/oophp-v4/kmom05)
-* [06: Enhetstestning](https://dbwebb.se/kurser/oophp-v4/kmom06)
+* [02: Arv och Komposition](https://dbwebb.se/kurser/oophp-v4/kmom02)
+* [03: Enhetstestning](https://dbwebb.se/kurser/oophp-v4/kmom03)
+* [04: Trait och Interface](https://dbwebb.se/kurser/oophp-v4/kmom04)
+* [05: PHP PDO och MySQL](https://dbwebb.se/kurser/oophp-v4/kmom05)
+* [06: Lagra innehåll i databasen](https://dbwebb.se/kurser/oophp-v4/kmom06)
 * [07/10: Projekt och examination](https://dbwebb.se/kurser/oophp-v4/kmom10)
 
 
