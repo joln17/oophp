@@ -4,11 +4,13 @@
  */
 //var_dump(array_keys(get_defined_vars()));
 
+
+
 /**
  * Login.
  */
 $app->router->any(['GET', 'POST'], 'movie/login', function () use ($app) {
-    $isLoggedIn = isLoggedIn($app->session);
+    $isLoggedIn = $app->session->has('userid');
     $data = [
         'title' => "Logga in",
         'isLoggedIn' => $isLoggedIn,
@@ -21,7 +23,6 @@ $app->router->any(['GET', 'POST'], 'movie/login', function () use ($app) {
 
         $movieDB = new \Joln\MovieDB\MovieDB($app->db);
         $verified = $movieDB->verifyLogin($user, $password);
-        $data['res'] = $verified;
         if ($verified) {
             $app->session->set('userid', $user);
             $app->response->redirect('movie/crud');
@@ -49,20 +50,33 @@ $app->router->get('movie/logout', function () use ($app) {
 
 
 /**
- * Show all movies.
+ * Show all movies with sort and paginate options.
  */
-$app->router->get('movie/show-all', function () use ($app) {
-    $isLoggedIn = isLoggedIn($app->session);
+$app->router->get('movie/show', function () use ($app) {
+    $isLoggedIn = $app->session->has('userid');
     $data = [
         'title' => "Filmdatabas",
-        'isLoggedIn' => $isLoggedIn
+        'isLoggedIn' => $isLoggedIn,
+        'defaultRoute' => '?'
     ];
     $app->view->add('movie/header', $data);
 
-    $movieDB = new \Joln\MovieDB\MovieDB($app->db);
-    $data['res'] = $movieDB->getAllMovies();
+    $hits = $app->request->getGet('hits', 4);
+    $page = $app->request->getGet('page', 1);
+    if (!(preg_match('/^[248]$/', $hits) && preg_match('/^\d+$/', $page) && $page != 0)) {
+        $app->response->redirect('movie/show');
+        exit;
+    }
 
-    $app->view->add('movie/show-res', $data);
+    $orderBy = $app->request->getGet('orderby', 'id');
+    $order = $app->request->getGet('order', 'asc');
+
+    $movieDB = new \Joln\MovieDB\MovieDB($app->db);
+    $data['max'] = $movieDB->getMaxPage($hits);
+    $data['res'] = $movieDB->getMoviesPaginate($hits, $page, $orderBy, $order);
+    $data['queryString'] = $app->request->getServer('QUERY_STRING');
+
+    $app->view->add('movie/show-res-paginate', $data);
     $app->page->render($data);
 });
 
@@ -72,7 +86,7 @@ $app->router->get('movie/show-all', function () use ($app) {
  * Search for title.
  */
 $app->router->get('movie/search-title', function () use ($app) {
-    $isLoggedIn = isLoggedIn($app->session);
+    $isLoggedIn = $app->session->has('userid');
     $data = [
         'title' => "Sök på titel i filmdatabasen",
         'isLoggedIn' => $isLoggedIn
@@ -98,7 +112,7 @@ $app->router->get('movie/search-title', function () use ($app) {
  * Search for year.
  */
 $app->router->get('movie/search-year', function () use ($app) {
-    $isLoggedIn = isLoggedIn($app->session);
+    $isLoggedIn = $app->session->has('userid');
     $data = [
         'title' => "Sök på år i filmdatabasen",
         'isLoggedIn' => $isLoggedIn
@@ -107,6 +121,8 @@ $app->router->get('movie/search-year', function () use ($app) {
 
     $year1 = $app->request->getGet('year1');
     $year2 = $app->request->getGet('year2');
+    $year1 = preg_match('/^(?:19|2[01])\d{2}$/', $year1) ? $year1 : null;
+    $year2 = preg_match('/^(?:19|2[01])\d{2}$/', $year2) ? $year2 : null;
     $data['year1'] = $year1;
     $data['year2'] = $year2;
     $app->view->add('movie/search-year', $data);
@@ -126,7 +142,7 @@ $app->router->get('movie/search-year', function () use ($app) {
  * CRUD.
  */
 $app->router->any(['GET', 'POST'], 'movie/crud', function () use ($app) {
-    $isLoggedIn = isLoggedIn($app->session);
+    $isLoggedIn = $app->session->has('userid');
     if (!$isLoggedIn) {
         $app->response->redirect('movie/login');
         exit;
@@ -140,7 +156,7 @@ $app->router->any(['GET', 'POST'], 'movie/crud', function () use ($app) {
     $movieId = $app->request->getPost('movieId');
     $movieDB = new \Joln\MovieDB\MovieDB($app->db);
 
-    if ($app->request->getPost('doDelete')) {
+    if ($app->request->getPost('doDelete') && is_numeric($movieId)) {
         $movieDB->deleteMovie($movieId);
         $app->response->redirect('movie/crud');
         exit;
@@ -165,7 +181,7 @@ $app->router->any(['GET', 'POST'], 'movie/crud', function () use ($app) {
  * Edit movie.
  */
 $app->router->any(['GET', 'POST'], 'movie/edit', function () use ($app) {
-    $isLoggedIn = isLoggedIn($app->session);
+    $isLoggedIn = $app->session->has('userid');
     if (!$isLoggedIn) {
         $app->response->redirect('movie/login');
         exit;
@@ -175,7 +191,11 @@ $app->router->any(['GET', 'POST'], 'movie/edit', function () use ($app) {
         'isLoggedIn' => $isLoggedIn
     ];
 
-    $movieId = $app->request->getPost('movieId') ? : $app->request->getGet('movie_id');
+    $movieId = $app->request->getGet('movie_id');
+    if (!is_numeric($movieId)) {
+        $app->response->redirect('movie/crud');
+        exit;
+    }
     $movieTitle = $app->request->getPost('movieTitle');
     $movieYear = $app->request->getPost('movieYear');
     $movieImage = $app->request->getPost('movieImage');
@@ -199,7 +219,7 @@ $app->router->any(['GET', 'POST'], 'movie/edit', function () use ($app) {
  * Reset DB.
  */
 $app->router->any(['GET', 'POST'], 'movie/reset', function () use ($app) {
-    $isLoggedIn = isLoggedIn($app->session);
+    $isLoggedIn = $app->session->has('userid');
     if (!$isLoggedIn) {
         $app->response->redirect('movie/login');
         exit;

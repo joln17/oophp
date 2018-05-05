@@ -16,7 +16,7 @@ namespace Anax\View;
     <legend>Sök</legend>
     <p>
         <label>Titel (använd % som jokertecken):
-            <input type="search" name="searchTitle" value="<?= htmlentities($searchTitle) ?>">
+            <input type="search" name="searchTitle" value="<?= htmlentities($searchTitle) ?>" required autofocus>
         </label>
     </p>
     <p>
@@ -24,3 +24,4 @@ namespace Anax\View;
     </p>
     </fieldset>
 </form>
+<br>

@@ -6,7 +6,7 @@ namespace Joln\MovieDB;
  */
 class MovieDB
 {
-    /** @var object $db    anax\database */
+    /** @var object $db    Anax Database object */
     private $db;
 
 
@@ -14,7 +14,7 @@ class MovieDB
     /**
      * Constructor to create a MovieDB
      *
-     * @param object $db    anax\database.
+     * @param object $db    Anax Database object.
      */
     public function __construct(\Anax\Database\Database $db)
     {
@@ -39,7 +39,36 @@ class MovieDB
 
 
     /**
+     * Get selected rows from DB
+     *
+     * @param int $hits          Number of hits
+     * @param int $page          Page number
+     * @param string $orderby    Order by id, title, year or image
+     * @param string $order      asc or desc order
+     *
+     * @return mixed    Resultset.
+     */
+    public function getMoviesPaginate(int $hits, int $page, string $orderBy, string $order)
+    {
+        $offset = $hits * ($page - 1);
+        $columns = ['id', 'title', 'year', 'image'];
+        $orders = ['asc', 'desc'];
+        $res = null;
+
+        if (in_array($orderBy, $columns) && in_array($order, $orders)) {
+            $sql = "SELECT * FROM movie ORDER BY $orderBy $order LIMIT $hits OFFSET $offset;";
+            $res = $this->db->executeFetchAll($sql);
+        }
+
+        return $res;
+    }
+
+
+
+    /**
      * Get movie by id
+     *
+     * @param int $movieId    The id of the movie to get from the DB
      *
      * @return mixed    Resultset.
      */
@@ -47,13 +76,33 @@ class MovieDB
     {
         $sql = "SELECT * FROM movie WHERE id = ?;";
         $res = $this->db->executeFetchAll($sql, [$movieId]);
-        return $res[0];
+        $movie = $res[0] ?? null;
+        return $movie;
+    }
+
+
+
+    /**
+     * Get max number of pages
+     *
+     * @param int $hits    Number of hits
+     *
+     * @return int    Maximum number of pages.
+     */
+    public function getMaxPage(int $hits)
+    {
+        $sql = "SELECT COUNT(id) AS max FROM movie;";
+        $max = $this->db->executeFetchAll($sql);
+        $max = ceil($max[0]->max / $hits);
+        return $max;
     }
 
 
 
     /**
      * Search for title in DB
+     *
+     * @param string $title    Search for movies with this title
      *
      * @return mixed    Resultset.
      */
@@ -72,9 +121,12 @@ class MovieDB
     /**
      * Search for years in DB
      *
+     * @param int $year1    Search for movies released >= year1
+     * @param int $year2    Search for movies released <= year2
+     *
      * @return mixed    Resultset.
      */
-    public function searchYear(int $year1, int $year2)
+    public function searchYear(?int $year1, ?int $year2)
     {
         $res = null;
         if ($year1 && $year2) {
@@ -95,6 +147,10 @@ class MovieDB
     /**
      * Add new title to DB
      *
+     * @param string $title    The movie title to add
+     * @param int $year        Release year of the movie
+     * @param string $image    File name of the image
+     *
      * @return int    ID of added movie.
      */
     public function addMovie(string $title = "A title", int $year = 2018, string $image = "noimage.png")
@@ -110,6 +166,8 @@ class MovieDB
     /**
      * Delete title from DB
      *
+     * @param int $movieId    The id of the movie to delete from the DB
+     *
      * @return int    rows deleted.
      */
     public function deleteMovie(int $movieId)
@@ -123,6 +181,11 @@ class MovieDB
 
     /**
      * Update title in DB
+     *
+     * @param string $movieTitle    The updated title of the movie
+     * @param int $movieYear        The updated release year of the movie
+     * @param string $movieImage    The updated file name of the image
+     * @param int $movieId          The id of the movie to update
      *
      * @return int    rows affected.
      */
@@ -159,8 +222,7 @@ class MovieDB
         $output = [];
         $status = null;
         $res = exec($command, $output, $status);
-        $output = "<p>The command was: <code>$command</code>.<br>The command exit status was $status."
-            . "<br>The output from the command was:</p><pre>"
+        $output = "<p>The command exit status was $status.<br>The output from the command was:</p><pre>"
             . print_r($output, 1);
         return $output;
     }
@@ -170,15 +232,20 @@ class MovieDB
     /**
      * Check if login is valid
      *
+     * @param string $user        User name to verify
+     * @param string $password    Password to verify
+     *
      * @return bool    True when login is verified.
      */
     public function verifyLogin(string $user, string $password)
     {
+        $verified = false;
         if ($user && $password) {
             $sql = "SELECT * FROM movie_user WHERE user = ?;";
             $res = $this->db->executeFetchAll($sql, [$user]);
-            $hash = $res[0]->password ?? null;
-            $verified = password_verify($password, $hash) ? true : false;
+            if (isset($res[0]->password)) {
+                $verified = password_verify($password, $res[0]->password);
+            }
         }
         return $verified;
     }

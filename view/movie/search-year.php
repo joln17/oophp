@@ -15,7 +15,7 @@ namespace Anax\View;
     <fieldset>
     <legend>Sök</legend>
     <p>
-        <label>Släppt mellan: 
+        <label>Släppt mellan år: 
         <input type="number" name="year1" value="<?= $year1 ?: 1900 ?>" min="1900" max="2100">
         - 
         <input type="number" name="year2" value="<?= $year2 ?: 2100 ?>" min="1900" max="2100">
@@ -26,3 +26,4 @@ namespace Anax\View;
     </p>
     </fieldset>
 </form>
+<br>

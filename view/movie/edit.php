@@ -9,12 +9,14 @@ namespace Anax\View;
 // Show incoming variables and view helper functions
 //echo showEnvironment(get_defined_vars(), get_defined_functions());
 
+if (!$movie) {
+    return;
+}
 ?>
 
 <form method="post">
     <fieldset>
     <legend>Redigera</legend>
-    <input type="hidden" name="movieId" value="<?= $movie->id ?>">
 
     <p>
         <label>Titel:<br> 

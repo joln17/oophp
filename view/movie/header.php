@@ -12,8 +12,8 @@ namespace Anax\View;
 $isLoggedIn = $isLoggedIn ?? false;
 ?>
 
-<navbar class="navbar">
-    <a href="show-all">Visa alla filmer</a>
+<navbar>
+    <a href="show">Visa filmer</a>
     | <a href="search-title">Sök titel</a>
     | <a href="search-year">Sök år</a>
 <?php if ($isLoggedIn) : ?>
