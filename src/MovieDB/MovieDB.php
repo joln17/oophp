@@ -221,7 +221,7 @@ class MovieDB
         $command = "$mysql -h {$host} -P {$port} -u {$login} -p{$password} $database < $file 2>&1";
         $output = [];
         $status = null;
-        $res = exec($command, $output, $status);
+        exec($command, $output, $status);
         $output = "<p>The command exit status was $status.<br>The output from the command was:</p><pre>"
             . print_r($output, 1);
         return $output;

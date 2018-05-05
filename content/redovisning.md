@@ -100,7 +100,21 @@ Jag stötte på lite problem med felmeddelanden för .js-filerna i build-mappen 
 Kmom05
 -------------------------
 
-Här är redovisningstexten
+### Några reflektioner kring koden i övningen för PHP PDO och MySQL?
+PHP PDO använde vi ju redan i den första htmlphp-kursen fast med SQLite istället för MySQL så det som kändes nytt var främst kopplingen mot MySQL och att PDO-koden lades in i en ”wrapper-klass”. I övrigt tyckte jag att det var bra med påminnelse om säkerhetsaspekter på koden eftersom det är lätt att man glömmer bort det som nybörjare. Intressant också att se hur man kan lösa sortering och paginering på ett smart sätt.
+
+### Hur gick det att överföra koden in i ramverket, stötte du på några utmaningar?
+Utmaningen var främst att lyckas strukturera koden på ett bra sätt och t.ex. inte frestas att trycka in allting i routen. Jag tycker att jag åtminstone delvis lyckades undvika det.
+
+### Berätta om din slutprodukt för filmdatabasen, gjorde du endast basfunktionaliteten eller lade du till extra features och hur tänkte du till kring användarvänligheten och din kodstruktur?
+Utöver grundkraven lade jag in stöd för att återskapa databasen, sortering, paginering, Cimage för bilderna och en inloggningsfunktion. Vad det gäller användarvänligheten tyckte jag den fungerade ganska bra i övningen. Jag valde därför att inte göra några direkta förbättringar av den utan refaktorerade i stort sett bara koden, förutom de delar som saknades (t.ex. inloggningsfunktionen).
+
+För inloggningsfunktionen skapade jag en ny tabell för användare och deras hashade lösenord. CRUD-sidan och sidan för att återskapa databasen dolde jag sedan för icke inloggade användare.
+
+Vad det gäller kodstrukturen så lade jag all databaskod i en klass MovieDB för att få bort den från routen vilket jag tyckte blev ganska bra. Dock hade man kanske kunnat börja med att göra en mer generell DB-klass som man hade kunnat återanvända i andra sammanhang. Det som är kvar i routen som man nog borde överväga att flytta är en del verifiering (av t.ex. om användaren är inloggad eller inte). Men tiden rann iväg lite och jag valde att fokusera på att få till funktionaliteten.
+
+### Vilken är din TIL för detta kmom?
+Framförallt känner jag att jag kommit in lite mer i Anax och ramverkstänket efter veckans uppgift. Några saker som jag inte riktigt förstått tidigare trillade på plats nu med t.ex. hur man kan använda klasserna och metoderna som hör till Anax.
 
 
 
