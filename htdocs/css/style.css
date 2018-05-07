@@ -83,6 +83,10 @@ body {
     color: #98c1d9;
 }
 
+.inner-wrap-navbar {
+    max-width: 100%;
+}
+
 
 
 /**
@@ -137,6 +141,9 @@ body {
     max-width: 100%;
 }
 
+pre {
+    white-space: pre-wrap;
+}
 
 
 /**
