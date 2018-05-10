@@ -41,8 +41,7 @@ function orderby2(string $queryString, string $column, string $route)
     
     return <<<EOD
 <span class="orderby">
-<a href="$asc">&darr;</a>
-<a href="$desc">&uarr;</a>
+<a href="$asc">&darr;</a>&nbsp;<a href="$desc">&uarr;</a>
 </span>
 EOD;
 }

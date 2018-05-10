@@ -73,7 +73,12 @@ $app->router->get('movie/show', function () use ($app) {
 
     $movieDB = new \Joln\MovieDB\MovieDB($app->db);
     $data['max'] = $movieDB->getMaxPage($hits);
-    $data['res'] = $movieDB->getMoviesPaginate($hits, $page, $orderBy, $order);
+    if ($page > $data['max']) {
+        $queryString = "?hits={$hits}&page={$data['max']}&orderby={$orderBy}&order={$order}";
+        $app->response->redirect("movie/show{$queryString}");
+    }
+
+    $data['res'] = $movieDB->getRowsPaginate($hits, $page, $orderBy, $order);
     $data['queryString'] = $app->request->getServer('QUERY_STRING');
 
     $app->view->add('movie/show-res-paginate', $data);
@@ -99,7 +104,7 @@ $app->router->get('movie/search-title', function () use ($app) {
 
     if ($searchTitle) {
         $movieDB = new \Joln\MovieDB\MovieDB($app->db);
-        $data['res'] = $movieDB->searchTitle($searchTitle);
+        $data['res'] = $movieDB->searchColumn($searchTitle);
         $app->view->add('movie/show-res', $data);
     }
 
@@ -157,11 +162,11 @@ $app->router->any(['GET', 'POST'], 'movie/crud', function () use ($app) {
     $movieDB = new \Joln\MovieDB\MovieDB($app->db);
 
     if ($app->request->getPost('doDelete') && is_numeric($movieId)) {
-        $movieDB->deleteMovie($movieId);
+        $movieDB->deleteRow($movieId);
         $app->response->redirect('movie/crud');
         exit;
     } elseif ($app->request->getPost('doAdd')) {
-        $movieId = $movieDB->addMovie();
+        $movieId = $movieDB->addRow();
         $app->response->redirect("movie/edit?movie_id=$movieId");
         exit;
     } elseif ($app->request->getPost('doEdit') && is_numeric($movieId)) {
@@ -169,7 +174,7 @@ $app->router->any(['GET', 'POST'], 'movie/crud', function () use ($app) {
         exit;
     } else {
         $app->view->add('movie/header', $data);
-        $data['res'] = $movieDB->getAllMovies();
+        $data['res'] = $movieDB->getAllRows();
         $app->view->add('movie/crud', $data);
         $app->page->render($data);
     }
@@ -196,19 +201,21 @@ $app->router->any(['GET', 'POST'], 'movie/edit', function () use ($app) {
         $app->response->redirect('movie/crud');
         exit;
     }
-    $movieTitle = $app->request->getPost('movieTitle');
-    $movieYear = $app->request->getPost('movieYear');
-    $movieImage = $app->request->getPost('movieImage');
+    $movieData = [
+        'title' => $app->request->getPost('movieTitle'),
+        'year'  => $app->request->getPost('movieYear'),
+        'image' => $app->request->getPost('movieImage')
+    ];
     $movieDB = new \Joln\MovieDB\MovieDB($app->db);
 
     if ($app->request->getPost('doSave')) {
-        $movieDB->updateMovie($movieTitle, $movieYear, $movieImage, $movieId);
+        $movieDB->updateRow($movieId, $movieData);
         $app->response->redirect("movie/edit?movie_id=$movieId");
         exit;
     }
 
     $app->view->add('movie/header', $data);
-    $data['movie'] = $movieDB->getMovieById($movieId);
+    $data['movie'] = $movieDB->getRowById($movieId);
     $app->view->add('movie/edit', $data);
     $app->page->render($data);
 });

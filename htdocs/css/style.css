@@ -141,6 +141,10 @@ body {
     max-width: 100%;
 }
 
+.ta-left {
+    text-align: left;
+}
+
 pre {
     white-space: pre-wrap;
 }
@@ -172,6 +176,9 @@ td {
     padding: 4px;
 }
 
+.table-font-small {
+    font-size: small;
+}
 
 
 /**

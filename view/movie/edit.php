@@ -27,6 +27,7 @@ if (!$movie) {
     <p>
         <label>År:<br> 
         <input type="number" name="movieYear" value="<?= $movie->year ?>">
+        </label>
     </p>
 
     <p>
