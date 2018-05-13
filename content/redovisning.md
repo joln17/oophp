@@ -121,7 +121,34 @@ Framförallt känner jag att jag kommit in lite mer i Anax och ramverkstänket e
 Kmom06
 -------------------------
 
-Här är redovisningstexten
+### Hur gick det att jobba med klassen för filtrering och formatering av texten?
+Att få till de fyra grundfiltren gick utan problem och jag tyckte det var en av de enklare delarna i detta kmom.
+
+Jag gjorde också ett försök med att få till ett HTML Purifier-filter som jag såg att Anax egen TextFilter-klass hade stöd för. Det hade känts bra att köra artikeltexterna genom detta istället för att helt lita på att användarna inte lägger in icke välkomna script och taggar. Tyvärr fick jag det dock inte riktigt att fungera när jag testade att lite snabbt lägga in det i min egna klass och jag valde att inte lägga tid på att felsöka det närmare.
+
+### Berätta om din klasstruktur och kodstruktur för din lösning av webbsidor med innehåll i databasen.
+Jag insåg ganska snabbt att det var många delar vad det gäller databaskoden till CMS-uppgiften som var lik filmuppgiften i förra veckans kmom. Jag började därför med att skriva en ny gemensam databasklass “BaseDB”. Därefter skrev jag en ny filmdatabasklass och en content-databasklass som ärver från “BaseDB” men lägger till lite extra metoder som krävs i resp. klass. 
+
+### Hur känner du rent allmänt för den koden du skrivit i din me/redovisa, vad är bra och mindre bra? Ser du potential till refactoring av din kod och/eller behov av stöd från ramverket?
+Jag blev ganska nöjd med min lösning för databaskoden ovan och att jag slapp duplicera så mycket kod mellan film-databaskoden och content-databaskoden. Sedan finns det helt säkert bättre sätt att göra det på.
+
+Det finns en del kod i routen som upprepas ganska mycket, t.ex. koden för att se om en användare är inloggad eller inte. Det hade man ju önskat få i någon middleware-lösning odyl. istället som vi gjorde i databaskursen. Det finns även en del annan verifieringskod i routen som man nog hade kunnat få till på ett bättre sätt.
+
+### Vilken är din TIL för detta kmom?
+Jag insåg att jag inte riktigt förstått när man bör använda arv och när man bör använda komposition när jag läste det avsnittet i kmom02. Läste lite mer om ämnet nu och blev kanske lite klokare. Den allmänna åsikten verkar vara att man ska “favour composition over inheritance”.
+
+### Övrigt och extrauppgifter
+Utöver grundkraven har jag lagt till inloggning, möjlighet för inloggade användare att se borttagna och ej publicerade artiklar, möjlighet att återskapa borttagna artiklar, paginering/sortering på admin-sidan som visar allt innehåll, samt att det loggas vem som skapat en artikel/bloggpost.
+
+Som ej inloggad användare kan man bara se en överblick av publicerade [webbsidor](content/article) och [bloggposter](content/blog) med länkar till resp. artikel/post.
+
+Som inloggad användare kan man på dessa båda sidor även se borttagna och ej publicerade artiklar/poster. Man kommer också åt [adminsidan](content/show) med allt innehåll där man kan klicka vidare för att redigera en artikel, ta bort en artikel eller återskapa en borttagen artikel. För inloggade användare finns också en sida för att [skapa nya artiklar](content/create).
+
+En av de saker som vållade mig mest problem var hur path och slug skulle hanteras. Skulle det finnas möjlighet att sätta path för bloggposter och slug för sidor? Det verkade inte finnas någon tanke för att använda dem på det sättet så jag valde att dölja inmatningen av de kombinationerna på redigeringssidan för användarna. Slug sätts sedan till null för sid-typen medan för post-typen så autogenereras en path av typen blogpost_{id}.
+
+För sid-typen sätts path som default till null när man skapar en ny sida och användaren får alltså fylla i den själv. För bloggposter autogenereras en slug när man skapar en ny sida eller lämnar fältet tomt (men användaren kan förstås ändra den).
+
+Kombinationen av att användare själva skulle ha möjlighet att sätta sin egen path och slug samtidigt som de behöver vara unika var också lite klurig att lösa. Jag valde att lägga på _{id} i slutet på pathen/slugen om den angivna pathen/slugen redan finns. Bättre hade kanske varit att informera användaren om att pathen/slugen redan existerar och be användaren ange en ny.
 
 
 

@@ -22,6 +22,7 @@ $isLoggedIn = $isLoggedIn ?? false;
         <th>Id</th>
         <th>Titel</th>
         <th>Status</th>
+        <th>Skapad av</th>
         <th>Publicerad</th>
     </tr>
 <?php foreach ($res as $row) : ?>
@@ -34,6 +35,7 @@ $isLoggedIn = $isLoggedIn ?? false;
         <td><?= $row->title ?></td>
     <?php endif; ?>
         <td><?= $row->status ?></td>
+        <td><?= $row->user ?></td>
         <td><?= $row->published ?></td>
     </tr>
     <?php endif; ?>

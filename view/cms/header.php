@@ -14,7 +14,7 @@ $isLoggedIn = $isLoggedIn ?? false;
 
 <navbar>
     <a href="article">Webbsidor</a>
-    | <a href="blog">Blog</a>
+    | <a href="blog">Blogg</a>
 <?php if ($isLoggedIn) : ?>
     | <a href="show">Admin</a>
     | <a href="create">Skapa ny artikel</a>

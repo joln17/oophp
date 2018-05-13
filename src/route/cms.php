@@ -135,7 +135,7 @@ $app->router->get('content/blog', function () use ($app) {
     if (!$slug) {
         $app->view->add('cms/header', $data);
         $data['res'] = $content->getArticlesByType('post');
-        $data['title'] = "Blog";
+        $data['title'] = "Blogg";
         $app->view->add('cms/blog', $data);
         $app->page->render($data);
         exit;
