@@ -13,6 +13,7 @@ body {
     margin: 0;
     background-color: #fff;
     word-wrap: break-word;
+    min-width: 320px;
 }
 
 .outer-wrap {
@@ -24,7 +25,6 @@ body {
     margin: 0 auto;
     padding: 0 0.5em;
     max-width: 680px;
-    min-width: 320px;
 }
 
 
@@ -101,6 +101,7 @@ body {
 }
 
 
+
 /**
  * Main
  */
@@ -141,19 +142,21 @@ body {
     max-width: 100%;
 }
 
-.ta-left {
-    text-align: left;
-}
-
 pre {
     white-space: pre-wrap;
 }
+
+.font-small {
+    font-size: small;
+}
+
 
 
 /**
  * Table
  */
 table {
+    margin: 0 auto;
     border: 1px solid #ccc;
     padding: 0.5em;
 }
@@ -176,9 +179,21 @@ td {
     padding: 4px;
 }
 
-.table-font-small {
-    font-size: small;
+
+
+/**
+ * Edit content
+ */
+.edit-text {
+    max-width: 50%;
+    min-width: 280px;
 }
+
+.edit-textarea {
+    width: 100%;
+    height: 200px;
+}
+
 
 
 /**

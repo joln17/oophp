@@ -15,25 +15,27 @@ if (!$res) {
 $isLoggedIn = $isLoggedIn ?? false;
 ?>
 
+<h1><?= $title ?></h1>
 <p>Rader per sida: 
-    <a href="<?= mergeQueryString($queryString, ['hits' => 5], $defaultRoute) ?>">5</a> |
-    <a href="<?= mergeQueryString($queryString, ['hits' => 10], $defaultRoute) ?>">10</a> |
-    <a href="<?= mergeQueryString($queryString, ['hits' => 20], $defaultRoute) ?>">20</a>
+    <a href="<?= mergeQueryString($queryString, ['hits' => 5]) ?>">5</a> |
+    <a href="<?= mergeQueryString($queryString, ['hits' => 10]) ?>">10</a> |
+    <a href="<?= mergeQueryString($queryString, ['hits' => 20]) ?>">20</a>
 </p>
 
-<table class="table-font-small">
+<table class="font-small">
     <tr class="first">
-        <th>Id<br><?= orderby2($queryString, 'id', $defaultRoute) ?></th>
-        <th>Titel<br><?= orderby2($queryString, 'title', $defaultRoute) ?></th>
-        <th>Typ<br><?= orderby2($queryString, 'type', $defaultRoute) ?></th>
-        <th>Path<br><?= orderby2($queryString, 'path', $defaultRoute) ?></th>
-        <th>Slug<br><?= orderby2($queryString, 'slug', $defaultRoute) ?></th>
-        <th>Publicerad<br><?= orderby2($queryString, 'published', $defaultRoute) ?></th>
-        <th>Skapad<br><?= orderby2($queryString, 'created', $defaultRoute) ?></th>
-        <th>Uppdaterad<br><?= orderby2($queryString, 'updated', $defaultRoute) ?></th>
-        <th>Borttagen<br><?= orderby2($queryString, 'deleted', $defaultRoute) ?></th>
+        <th>Id<br><?= orderby2($queryString, 'id') ?></th>
+        <th>Titel<br><?= orderby2($queryString, 'title') ?></th>
+        <th>Typ<br><?= orderby2($queryString, 'type') ?></th>
+        <th>Path<br><?= orderby2($queryString, 'path') ?></th>
+        <th>Slug<br><?= orderby2($queryString, 'slug') ?></th>
+        <th>Publicerad<br><?= orderby2($queryString, 'published') ?></th>
+        <th>Skapad<br><?= orderby2($queryString, 'created') ?></th>
+        <th>Uppdaterad<br><?= orderby2($queryString, 'updated') ?></th>
+        <th>Borttagen<br><?= orderby2($queryString, 'deleted') ?></th>
     <?php if ($isLoggedIn) : ?>
-        <th class="ta-left"><i class="fas fa-edit"></i><i class="fas fa-trash"></i></th>
+        <th><i class="fas fa-edit"></i></th>
+        <th><i class="fas fa-trash"></i></th>
     <?php endif; ?>
     </tr>
 <?php foreach ($res as $row) : ?>
@@ -47,11 +49,11 @@ $isLoggedIn = $isLoggedIn ?? false;
         <td><?= $row->created ?></td>
         <td><?= $row->updated ?></td>
         <td><?= $row->deleted ?></td>
-    <?php if ($isLoggedIn) : ?>
-        <td>
-            <a href="edit?id=<?= $row->id ?>"><i class="fas fa-edit"></i></a>
-            <a href="delete?id=<?= $row->id ?>"><i class="fas fa-trash"></i></a>
-        </td>
+        <td><a href="edit?id=<?= $row->id ?>"><i class="fas fa-edit"></i></a></td>
+    <?php if (!$row->deleted) : ?>
+        <td><a href="delete?id=<?= $row->id ?>"><i class="fas fa-trash"></i></a></td>
+    <?php else : ?>
+        <td><a href="undelete?id=<?= $row->id ?>"><i class="fas fa-undo"></i></a></td>
     <?php endif; ?>
     </tr>
 <?php endforeach; ?>
@@ -60,7 +62,7 @@ $isLoggedIn = $isLoggedIn ?? false;
 <p>
     Sida:
     <?php for ($i = 1; $i <= $max; $i++) : ?>
-        <a href="<?= mergeQueryString($queryString, ['page' => $i], $defaultRoute) ?>"><?= $i ?></a> 
+        <a href="<?= mergeQueryString($queryString, ['page' => $i]) ?>"><?= $i ?></a> 
     <?php endfor; ?>
 </p>
 

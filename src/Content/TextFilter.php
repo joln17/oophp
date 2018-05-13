@@ -23,18 +23,23 @@ class TextFilter
      * Call each filter on the text and return the processed text.
      *
      * @param string $text     The text to filter.
-     * @param array $filter    Array of filters to use.
+     * @param array|string $filter    Array of filters or comma separted string.
      *
      * @return string    String with the formatted text.
      */
     public function parse($text, $filter)
     {
-        foreach ($filter as $key) {
-            $filterMethod = $this->filters[$key] ?? null;
-            if (!$filterMethod) {
-                throw new TextFilterException("$key is not a valid filter.");
+        if (is_string($filter)) {
+            $filter = explode(',', $filter);
+        }
+        if ($text && !empty($filter)) {
+            foreach ($filter as $key) {
+                $filterMethod = $this->filters[$key] ?? null;
+                if (!$filterMethod) {
+                    throw new TextFilterException("$key is not a valid filter.");
+                }
+                $text = $this->$filterMethod($text);
             }
-            $text = $this->$filterMethod($text);
         }
         return $text;
     }

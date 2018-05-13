@@ -138,9 +138,8 @@ class BaseDB
     public function getRowById(int $id)
     {
         $sql = "SELECT * FROM {$this->table} WHERE id = ?;";
-        $res = $this->db->executeFetch($sql, [$id]);
-        $id = $res ?? null;
-        return $id;
+        $res = $this->db->executeFetch($sql, [$id]) ?? null;
+        return $res;
     }
 
 

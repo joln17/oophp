@@ -13,7 +13,7 @@
  *
  * @return string with links to order by column.
  */
-function orderby(string $column, string $route)
+function orderby(string $column, string $route = '?')
 {
     return <<<EOD
 <span class="orderby">
@@ -34,7 +34,7 @@ EOD;
  *
  * @return string with links to order by column.
  */
-function orderby2(string $queryString, string $column, string $route)
+function orderby2(string $queryString, string $column, string $route = '?')
 {
     $asc = mergeQueryString($queryString, ['orderby' => $column, 'order' => 'asc'], $route);
     $desc = mergeQueryString($queryString, ['orderby' => $column, 'order' => 'desc'], $route);

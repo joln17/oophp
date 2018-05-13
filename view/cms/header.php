@@ -13,8 +13,11 @@ $isLoggedIn = $isLoggedIn ?? false;
 ?>
 
 <navbar>
-    <a href="show">Alla artiklar</a>
+    <a href="article">Webbsidor</a>
+    | <a href="blog">Blog</a>
 <?php if ($isLoggedIn) : ?>
+    | <a href="show">Admin</a>
+    | <a href="create">Skapa ny artikel</a>
     | <a href="reset">Återställ DB</a>
     | <a href="logout">Logga ut</a>
 <?php endif; ?>
@@ -22,5 +25,3 @@ $isLoggedIn = $isLoggedIn ?? false;
     | <a href="login">Logga in</a>
 <?php endif; ?>
 </navbar>
-
-<h1><?= $title ?></h1>

@@ -201,14 +201,14 @@ $app->router->any(['GET', 'POST'], 'movie/edit', function () use ($app) {
         $app->response->redirect('movie/crud');
         exit;
     }
-    $movieData = [
-        'title' => $app->request->getPost('movieTitle'),
-        'year'  => $app->request->getPost('movieYear'),
-        'image' => $app->request->getPost('movieImage')
-    ];
     $movieDB = new \Joln\MovieDB\MovieDB($app->db);
 
     if ($app->request->getPost('doSave')) {
+        $movieData = [
+            'title' => $app->request->getPost('movieTitle'),
+            'year'  => $app->request->getPost('movieYear'),
+            'image' => $app->request->getPost('movieImage')
+        ];
         $movieDB->updateRow($movieId, $movieData);
         $app->response->redirect("movie/edit?movie_id=$movieId");
         exit;
