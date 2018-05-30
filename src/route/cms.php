@@ -110,7 +110,7 @@ $app->router->get('content/article', function () use ($app) {
         exit;
     }
 
-    $data['res'] = $path ? $content->getPage($path) : null;
+    $data['res'] = $content->getPage($path);
     $data['title'] = $data['res']->title ?? null;
 
     $app->view->add('cms/header', $data);
@@ -254,9 +254,8 @@ $app->router->any(['GET', 'POST'], 'content/edit', function () use ($app) {
     }
 
     $app->view->add('cms/header', $data);
-    $article = $content->getRowById($articleId);
 
-    $data['article'] = $article;
+    $data['article'] = $content->getRowById($articleId);
     $data['types'] = $content->getArticleTypes();
     $data['filters'] = $content->getArticleFilters();
     $app->view->add('cms/edit', $data);

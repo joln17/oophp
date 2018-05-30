@@ -23,7 +23,7 @@ if (!$article) {
         <label>Typ:<br>
         <select name="type">
         <?php foreach ($types as $type) : ?>
-            <option value="<?= $type ?>" <?= $type != $article->type ? : "selected" ?>><?= $type ?></option>
+            <option value="<?= $type ?>" <?= $type != $article->type ? "" : "selected" ?>><?= $type ?></option>
         <?php endforeach; ?>;
         </select>
         </label>
@@ -58,7 +58,7 @@ if (!$article) {
         <label>Filter:</label><br>
     <?php $articleFilters = explode(',', $article->filter); ?>
     <?php foreach ($filters as $filter) : ?>
-        <input type="checkbox" name="filter[]" value="<?= $filter ?>" <?= !in_array($filter, $articleFilters) ? : "checked" ?>><?= $filter ?>
+        <input type="checkbox" name="filter[]" value="<?= $filter ?>" <?= !in_array($filter, $articleFilters) ? "" : "checked" ?>><?= $filter ?>
     <?php endforeach; ?>
     </p>
 

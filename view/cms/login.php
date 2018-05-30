@@ -24,6 +24,7 @@ namespace Anax\View;
     <p>
         <label>Lösenord:<br>
         <input type="password" name="password" required>
+        </label>
     </p>
 
     <p>

@@ -55,18 +55,9 @@ class Dice100
         $this->diceHand->rollDiceHand();
         $faceValues = $this->diceHand->getFaceValues();
         $this->faceValues[] = $faceValues;
-        $points = 0;
 
-        // Calculate points to sum of the face values unless there is a 1
-        if (!in_array(1, $faceValues)) {
-            $points = array_sum($faceValues);
-        }
-
-        if ($points == 0) {
-            $this->points = 0;
-        } else {
-            $this->points += $points;
-        }
+        $points = !in_array(1, $faceValues) ? array_sum($faceValues) : 0;
+        $this->points = ($points == 0) ? 0 : $this->points + $points;
 
         return $this->points;
     }

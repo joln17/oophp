@@ -17,7 +17,7 @@ namespace Anax\View;
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
 <?php if (isset($favicon)) : ?>
-    <link rel="icon" href="<?= $favicon ?>">
+    <link rel="icon" href="<?= asset($favicon) ?>">
 <?php endif; ?>
 
 <?php foreach ($stylesheets as $stylesheet) : ?>

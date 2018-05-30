@@ -1,0 +1,293 @@
+<?php
+namespace Joln\BaseDB;
+
+/**
+ * Class for BaseDB
+ */
+class BaseDB
+{
+    /** @var object $db    Anax Database object */
+    protected $db;
+
+    /** @var string $table    Table name */
+    protected $table;
+
+    /** @var string $userTable    User table name */
+    protected $userTable = 'user';
+
+    /** @var string $userColumn    User column name in user table */
+    protected $userColumn = 'user';
+
+    /** @var array $columns    Allowed columns to order by */
+    protected $columns = ['id', 'title'];
+
+    /** @var string $setupFile    SQL file to restore DB */
+    private $setupFile = '../sql/setup.sql';
+
+
+
+    /**
+     * Constructor to create a Database
+     *
+     * @param object $db       Anax Database object.
+     * @param string $table    Table name.
+     */
+    public function __construct(\Anax\Database\Database $db, string $table)
+    {
+        $this->db = $db;
+        $this->table = $table;
+        $this->db->connect();
+    }
+
+
+
+    /**
+     * Set allowed columns to order by
+     *
+     * @param array $columns    Array with allowed columns to order by.
+     *
+     * @return self
+     */
+    public function setColumns(array $columns)
+    {
+        $this->columns = $columns;
+        return $this;
+    }
+
+
+
+    /**
+     * Set the setup file
+     *
+     * @param string $setupFile    Path and file name of SQL setup file.
+     *
+     * @return self
+     */
+    public function setSetupFile(string $setupFile)
+    {
+        $this->setupFile = $setupFile;
+        return $this;
+    }
+
+
+
+    /**
+     * Set the user table and user column
+     *
+     * @param string $userTable    Name of the user table.
+     * @param string $userColumn    Name of the user column in the user table.
+     *
+     * @return self
+     */
+    public function setUserTable(string $userTable = 'user', string $userColumn = 'user')
+    {
+        $this->userTable = $userTable;
+        $this->userColumn = $userColumn;
+        return $this;
+    }
+
+
+
+    /**
+     * Get all rows from DB
+     *
+     * @return mixed    Resultset.
+     */
+    public function getAllRows()
+    {
+        $sql = "SELECT * FROM {$this->table};";
+        $res = $this->db->executeFetchAll($sql);
+        return $res;
+    }
+
+
+
+    /**
+     * Get selected rows from DB
+     *
+     * @param int $hits          Number of hits
+     * @param int $page          Page number
+     * @param string $orderby    Order by id, title, year or image
+     * @param string $order      asc or desc order
+     *
+     * @return mixed    Resultset.
+     */
+    public function getRowsPaginate(int $hits, int $page, string $orderBy, string $order)
+    {
+        $offset = $hits * ($page - 1);
+        $orders = ['asc', 'desc'];
+        $res = null;
+
+        if (in_array($orderBy, $this->columns) && in_array($order, $orders)) {
+            $sql = "SELECT * FROM {$this->table} ORDER BY $orderBy $order LIMIT $hits OFFSET $offset;";
+            $res = $this->db->executeFetchAll($sql);
+        }
+
+        return $res;
+    }
+
+
+
+    /**
+     * Get row by id
+     *
+     * @param int $id    The id of the row to get from the DB
+     *
+     * @return mixed    Resultset.
+     */
+    public function getRowById(int $id)
+    {
+        $sql = "SELECT * FROM {$this->table} WHERE id = ?;";
+        $res = $this->db->executeFetch($sql, [$id]) ?? null;
+        return $res;
+    }
+
+
+
+    /**
+     * Get max number of pages
+     *
+     * @param int $hits    Number of hits
+     *
+     * @return int    Maximum number of pages.
+     */
+    public function getMaxPage(int $hits)
+    {
+        $sql = "SELECT COUNT(id) AS max FROM {$this->table};";
+        $max = $this->db->executeFetch($sql);
+        $max = ceil($max->max / $hits);
+        return $max;
+    }
+
+
+
+    /**
+     * Search specific column in DB
+     *
+     * @param string $searchString    Search for this string
+     * @param string $column          Search in this column
+     *
+     * @return mixed    Resultset.
+     */
+    public function searchColumn(string $searchString, string $column = 'title')
+    {
+        $res = null;
+        if ($searchString) {
+            $sql = "SELECT * FROM {$this->table} WHERE {$column} LIKE ?;";
+            $res = $this->db->executeFetchAll($sql, [$searchString]);
+        }
+        return $res;
+    }
+
+
+
+    /**
+     * Add new row to DB
+     *
+     * @param array $data    The data to add
+     *
+     * @return int    ID of added row.
+     */
+    public function addRow(array $data)
+    {
+        $sql = "INSERT INTO {$this->table} (";
+        $sql .= implode(", ", array_keys($data));
+        $sql .= ") VALUES (";
+        $sql .= str_repeat("?, ", count($data) - 1);
+        $sql .= "?);";
+        $this->db->execute($sql, array_values($data));
+        $id = $this->db->lastInsertId();
+        return $id;
+    }
+
+
+
+    /**
+     * Delete row from DB
+     *
+     * @param int $id    The id of the row to delete from the DB
+     *
+     * @return int    Number of rows deleted.
+     */
+    public function deleteRow(int $id)
+    {
+        $sql = "DELETE FROM {$this->table} WHERE id = ?;";
+        $this->db->execute($sql, [$id]);
+        return $this->db->rowCount();
+    }
+
+
+
+    /**
+     * Update row in DB
+     *
+     * @param array $id      The row to update
+     * @param array $data    The data to update
+     *
+     * @return int    Number of rows updated.
+     */
+    public function updateRow(int $id, array $data)
+    {
+        $sql = "UPDATE {$this->table} SET ";
+        $sql .= implode(" = ?, ", array_keys($data));
+        $sql .= " = ? WHERE id = ?;";
+        $dataValues = array_values($data);
+        $dataValues[] = $id;
+        $this->db->execute($sql, $dataValues);
+        return $this->db->rowCount();
+    }
+
+
+
+    /**
+     * Restore the database to its original settings
+     *
+     * @return string    Output from exec MySQL command.
+     */
+    public function reset()
+    {
+        $mysql = '/usr/bin/mysql';
+        $output = null;
+
+        $dsn = $this->db->getConfig('dsn');
+        $dsnDetail = [];
+        preg_match('/mysql:host=(.+?);(?:port=(\d+);)?dbname=([^;.]+)/', $dsn, $dsnDetail, PREG_UNMATCHED_AS_NULL);
+        $host = $dsnDetail[1];
+        $port = $dsnDetail[2] ?? 3306;
+        $database = $dsnDetail[3];
+        $login = $this->db->getConfig('username');
+        $password = $this->db->getConfig('password');
+
+        $command = "$mysql -h {$host} -P {$port} -u {$login} -p{$password} $database < {$this->setupFile} 2>&1";
+        $output = [];
+        $status = null;
+        exec($command, $output, $status);
+        $output = "<p>The command exit status was $status.<br>The output from the command was:</p><pre>"
+            . print_r($output, 1);
+        return $output;
+    }
+
+
+
+    /**
+     * Check if login is valid
+     *
+     * @param string $user        User name to verify
+     * @param string $password    Password to verify
+     *
+     * @return bool    True when login is verified.
+     */
+    public function verifyLogin(string $user, string $password)
+    {
+        $verified = false;
+        if ($user && $password) {
+            $sql = "SELECT * FROM {$this->userTable} WHERE {$this->userColumn} = ?;";
+            $res = $this->db->executeFetch($sql, [$user]);
+            if (isset($res->password)) {
+                $verified = password_verify($password, $res->password);
+            }
+        }
+        return $verified;
+    }
+}
+

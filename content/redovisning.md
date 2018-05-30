@@ -155,4 +155,62 @@ Kombinationen av att användare själva skulle ha möjlighet att sätta sin egen
 Kmom07-10
 -------------------------
 
-Här är redovisningstexten
+### 1. Projektet
+
+#### Krav 1
+Jag valde att skapa en sajt Kloss.db som samlar produktinformation och nyheter om Lego.
+
+* [Förstasidan](http://www.student.bth.se/~joln17/dbwebb-kurser/oophp/me/kmom10/proj/htdocs/): Jag valde att göra krav 4 också så förstasidan beskrivs under den punkten.
+* [Produktsidan](http://www.student.bth.se/~joln17/dbwebb-kurser/oophp/me/kmom10/proj/htdocs/products): Här visas alla produkter i ett listläge med en miniatyrbild. Det finns paginering och det går att ändra antal produkter per sida och sorteringsordning. Klickar man på en produktlänk kommer man till en [produktsida](http://www.student.bth.se/~joln17/dbwebb-kurser/oophp/me/kmom10/proj/htdocs/products/show?id=21309) med mer information om produkten och en större bild.
+* [Bloggsidan](http://www.student.bth.se/~joln17/dbwebb-kurser/oophp/me/kmom10/proj/htdocs/blog): Här visas alla blogginlägg med rubrik och första stycket av inlägget samt en bild (om det finns med en i första stycket). Sidan har paginering och det visas fem blogginlägg per sida. Klickar man på ett [inlägg](http://www.student.bth.se/~joln17/dbwebb-kurser/oophp/me/kmom10/proj/htdocs/blog?post=valkommen-till-kloss-db) kan man läsa det i dess helhet.
+* [Om-sidan](http://www.student.bth.se/~joln17/dbwebb-kurser/oophp/me/kmom10/proj/htdocs/om): Kort info om sidan visas här.
+* Header: En logga och namnet på sajten visas till vänster i headern.
+* Footer: Texten “© Kloss.db” visas centrerat i footern.
+* Navbar: Länkar till förstasidan, produktsidan, bloggen och om-sidan finns i navbaren. Längst uppe i högra hörnet på sidan finns också en inloggningsikon som länkar till inloggningssidan. Är man väl inloggad syns istället en utloggningsikon samt en användarikon som länkar till profilsidan för användaren.
+
+#### Krav 2
+Jag har genomfört enhetstester på alla mina egna klasser. Dock består de nästan uteslutande av databasklasser vilket gjorde det lite trixigt att testa. Jag har löst det genom att skapa “reset”-sql-filer som återställer resp. tabell med ursprungsinnehållet för att man ska vara säker på att man testar mot förväntat innehåll. Jag skapade också en lokal konfigfil för databasanslutningen i test-katalogen (database.php). Efter det nådde jag [“grönt” resultat](http://www.student.bth.se/~joln17/dbwebb-kurser/oophp/me/kmom10/proj/doc/codecoverage.png) för testade rader och metoder i mina klasser (70%+).
+
+Dokumentation är genererad med phpdoc. (Jag fick dock en mängd varningsmeddelanden efter uppgradering till PHP 7.2 som phpdoc [inte verkar helt kompatibelt](https://github.com/phpDocumentor/phpDocumentor2/issues/1914) med men dokumentationen verkar genereras ändå).
+
+Rent allmänt om kodstrukturen så byggde jag vidare på koden jag skrivit från de tidigare kursmomenten med en bas-databasklass som sedan andra databasklasser ärver. Jag vet inte om det är det bästa sättet att hantera databaskoden på men det har åtminstone gjort att jag sluppit upprepa så mycket databaskod och jag har kunnat hålla routerna fri från databaskod. Totalt blev det fem route-filer, en för konton/inloggning, en för bloggdelen, en för produktsidan, en för spelet och en för förstasidan.
+
+#### Krav 3
+Via inloggningsikonen uppe till höger på sidan kan man [logga in](http://www.student.bth.se/~joln17/dbwebb-kurser/oophp/me/kmom10/proj/htdocs/account/login) som admin med admin/admin som user/pass.
+
+Inloggad som admin ser man på [produktsidan](http://www.student.bth.se/~joln17/dbwebb-kurser/oophp/me/kmom10/proj/htdocs/products) en admin-navbar samt för varje produkt syns en ikon för att redigera resp. ta bort en skapad produkt. Klickar man på [redigera](http://www.student.bth.se/~joln17/dbwebb-kurser/oophp/me/kmom10/proj/htdocs/products/edit?id=21309) kommer man till ett formulär där man kan ändra informationen om produkten. Klickar man på [ta bort](http://www.student.bth.se/~joln17/dbwebb-kurser/oophp/me/kmom10/proj/htdocs/products/delete?id=21309) hamnar man först på en sida där man får bekräfta att man vill ta bort produkten därefter tas produkten bort från tabellen i databasen. Inloggad som admin har man också möjlighet att [lägga till nya produkter](http://www.student.bth.se/~joln17/dbwebb-kurser/oophp/me/kmom10/proj/htdocs/products/create). Det finns också en möjlighet att [återställa innehållet](http://www.student.bth.se/~joln17/dbwebb-kurser/oophp/me/kmom10/proj/htdocs/products/reset) i produkttabellen.
+
+Är man inloggad som admin på [bloggsidan](http://www.student.bth.se/~joln17/dbwebb-kurser/oophp/me/kmom10/proj/htdocs/blog) ser man admin-navbaren för bloggen och man ser även ej publicerade och borttagna inlägg med en röd statusmarkering. På [adminsidan](http://www.student.bth.se/~joln17/dbwebb-kurser/oophp/me/kmom10/proj/htdocs/blog/admin) för bloggen har man möjlighet att [redigera](http://www.student.bth.se/~joln17/dbwebb-kurser/oophp/me/kmom10/proj/htdocs/blog/edit?id=1) och [ta bort](http://www.student.bth.se/~joln17/dbwebb-kurser/oophp/me/kmom10/proj/htdocs/blog/delete?id=1) blogginlägg genom att klicka på resp. ikon. På redigeringssidan för ett inlägg kan man ändra titel, slug (om man inte vill ha den autogenererade), skriva inlägg i Markdown Extra och välja när inlägget ska publiceras. Utöver Markdown-textfilter används för övrigt också HTML purifier-filter innan texten visas på sajten. Tar man bort ett inlägg så görs endast en “soft delete” och man har möjlighet att återställa ett borttaget inlägg om man råkar ta bort det av misstag. Slutligen kan man också [skapa nya inlägg](http://www.student.bth.se/~joln17/dbwebb-kurser/oophp/me/kmom10/proj/htdocs/blog/create) samt [återställa innehållet](http://www.student.bth.se/~joln17/dbwebb-kurser/oophp/me/kmom10/proj/htdocs/blog/reset) i bloggtabellen i databasen.
+
+Jag har även gjort krav 4 och 5 enligt beskrivning nedan vilket även ger admin-användare möjlighet att redigera innehållet på förstasidan samt se vilka användarkonton som finns skapade.
+
+#### Krav 4
+[Förstasidan](http://www.student.bth.se/~joln17/dbwebb-kurser/oophp/me/kmom10/proj/htdocs/) är indelad i fem olika sektioner: “Aktuellt” (featured blogginlägg) som visar ett utvalt blogginlägg. “Veckans erbjudande” som visar ett annat utvalt blogginlägg. “Senaste nytt” som visar de tre senaste publicerade blogginläggen. “Rekommenderade produkter” som visar två utvalda produkter och “Senaste produkter” visar de två produkterna med senast listdatum.
+
+Inloggad som admin kan man uppdatera samtliga sektioner via formuläret på [adminsidan](http://www.student.bth.se/~joln17/dbwebb-kurser/oophp/me/kmom10/proj/htdocs/index/edit): Antal inlägg och produkter som visas under varje sektion går att ändra liksom vilka inlägg och produkter som är utvalda. Det går även att ändra rubriken för respektive sektion. Det finns även en möjlighet att [återställa förstasidan](http://www.student.bth.se/~joln17/dbwebb-kurser/oophp/me/kmom10/proj/htdocs/index/reset) till ursprungsläget.
+
+Förstasidan liksom resten av sajten är designad för att vara responsiv och mobilanpassad (antalet sektioner i bredd och storleken på sektionerna ändras när man minskar bredden på fönstret).
+
+#### Krav 5
+Användare har möjlighet att [registrera ett nytt konto](http://www.student.bth.se/~joln17/dbwebb-kurser/oophp/me/kmom10/proj/htdocs/account/create) via länken som finns på inloggningssidan. Vid registrering får man fylla i önskat användarnamn, lösenord, namn, emejl och om man har en Gravatar kopplad till sin emejl som man vill visa. Användare som skapar konton själva får bara vanliga användarstatus och inte admin-status (vilket sätts med en flagga i tabellen i databasen). Alla lösenord sparas hashade i tabellen i databasen. Via [profilsidan](http://www.student.bth.se/~joln17/dbwebb-kurser/oophp/me/kmom10/proj/htdocs/account/edit) som man kommer åt via ikonen uppe till höger i headern har användare möjlighet att ändra sina uppgifter (förutom användarnamnet). Har man fyllt i att man vill använda en Gravatar så visas även denna här. En förskapad vanlig användare med en gravatar finns i form av användaren “bosse” med lösenord “abc123”.
+
+Inloggad som admin kan man via admin-navbaren på profilsidan komma åt [adminsidan](http://www.student.bth.se/~joln17/dbwebb-kurser/oophp/me/kmom10/proj/htdocs/account/admin) för att se information om alla skapade användarkonton.
+
+#### Krav 6
+I ett [blogginlägg](http://www.student.bth.se/~joln17/dbwebb-kurser/oophp/me/kmom10/proj/htdocs/blog?post=tavling) återfinns information om tävlingen med tärningsspelet. Som inloggad användare kan man [spela “Tärningsspel 100”](http://www.student.bth.se/~joln17/dbwebb-kurser/oophp/me/kmom10/proj/htdocs/dice100/game) och slår man datorn får man en vinstkod (koden är “plastbit”). Fyller man i koden på [angiven sida](http://www.student.bth.se/~joln17/dbwebb-kurser/oophp/me/kmom10/proj/htdocs/dice100/contest) får man information om vad man har vunnit.
+
+Jag kom inte egentligen inte på några större förändringar att göra av min kod till tärningsspelet från tidigare kursmoment. Några kodrader är dock lite snyggare skrivna. Jag lade också in så man ser sitt användarnamn när man spelar samt jag valde att plocka bort all kod för histogrammet som kändes överflödigt för tävlingsversionen av spelet.
+
+### 2. Projektets genomförande
+Eftersom de flesta delar av projektet förekommit i liknande i de tidigare kursmomenten på ett eller annat sätt (i uppgifter eller extrauppgifter) så tyckte jag egentligen inte att det var någon del som var så svår. Jag tycker projektet var mer utmanande tidsmässigt. Att både hitta/skriva content, göra både produktsidor, blogg, förstasida och sedan adminsidor av nästan alla sidor har tagit mycket tid sammanlagt. Jag har dock tyckt att det var ett roligt projekt och därför har jag kanske lagt mer tid på detaljer än vad som var nödvändigt.
+
+Jag tycker det var ett rimligt projekt för kursen men jag hade kanske förväntat mig lite mer objektorienterat fokus. Det känns som det var mer betoning på databasdelen. En idé hade därför kanske varit att ta bort antingen produktdatabasdelen eller bloggdatabasdelen från projektet och istället för att integrera det befintliga tärningsspelet få programmera något nytt objektorienterat spel.
+
+### 3. Om kursen
+Jag tycker kursen i stort har hållit samma höga kvalitét som de övriga kurserna i kurspaketet med bra artiklar, videor, övningar och uppgifter. Det har också varit bra feedback i forumet när jag ställt frågor. Feedbacken på de flesta av inlämningsuppgifterna har också varit lite utförligare än i de tidigare kurserna vilket jag uppskattar.
+
+Lite grann har det dock märkts att det var första gången kursen gick i dess v4 version. Kanske främst genom att omfattningen på de olika inlämningsuppgifterna var lite ojämn. Kmom02 var t.ex. väldigt utmanande redan vecka 2 vilket det förvisso sedan kompenserades för med en väldigt liten kmom03. Jag tycker också att fördelningen mellan de olika kursmomenten kan förbättras. Jag hade önskat få lite mer fokus på de objektorienterade delarna i kursen (arv, komposition, interface, traits etc.) med fler exempel, övningar och uppgifter för bättre kunna förstå hur man ska tänka när man ska välja hur man ska skriva sin objektorienterade PHP-kod. Med databas-kursen färskt i minnet tycker jag att man i gengäld kunde ha bantat ner de två databas-kursmomenten till ett.
+
+Det har också varit lite tråkigt att det har varit så få personer som läst kursen i denna perioden. I tidigare kurser tycker jag man lärt sig en hel del på att läsa andra personers frågor i chattar och forum samt ta del av deras redovisningstexter och se hur de har tänkt för att lösa samma uppgifter som man själv löst. Det har jag därför saknat lite i denna kursen.
+
+Jag skulle rekommendera kursen till andra men är det just objektorienterad programmering generellt man vill läsa en första kurs i så hade kanske inte denna kursen varit mitt förstaval eller ens PHP som språk. Dels för att jag som sagt tycker de momenten fick lite för lite fokus i kursen och dels för att OOP i PHP ju lite är en efterhandskonstruktion vilket jag tycker märks i vissa delar. Som avslutande kurs i webprog-kurspaketet tycker jag däremot att den passade bra och jag ger kursen 8/10 i betyg.
